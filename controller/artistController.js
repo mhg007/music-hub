@@ -2,7 +2,7 @@ const Artist = require('../models/Artists');
 
 exports.getArtists = async (req, res) => {
   const artists = await Artist.find();
-  res.json(artists);
+  res.status(200).json(artists);
 };
 
 exports.getArtist = async (req, res) => {

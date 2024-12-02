@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { getArtists, getArtist, createArtist, updateArtist, deleteArtist } = require('../controller/artistController');
+const authMiddleware = require('../middleware/authMiddleware');
 
 // Routes for artists
 router.route('/')
-  .get(getArtists)
-  .post(createArtist);
+  .get(authMiddleware,getArtists)
+  .post(authMiddleware,createArtist);
 
 router.route('/:id')
-  .get(getArtist)
-  .put(updateArtist)
-  .delete(deleteArtist);
+  .get(authMiddleware, getArtist)
+  .put(authMiddleware,updateArtist)
+  .delete(authMiddleware,deleteArtist);
 
 module.exports = router;
