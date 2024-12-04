@@ -1,4 +1,4 @@
-const Genre = require('../models/Genres');
+const Genre = require("../models/Genres");
 
 exports.getGenres = async (req, res) => {
   const genres = await Genre.find();
@@ -17,11 +17,22 @@ exports.createGenre = async (req, res) => {
 };
 
 exports.updateGenre = async (req, res) => {
-  const updatedGenre = await Genre.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const updatedGenre = await Genre.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
   res.json(updatedGenre);
 };
 
 exports.deleteGenre = async (req, res) => {
-  await Genre.findByIdAndDelete(req.params.id);
-  res.status(204).end();
+  try {
+    const genre = await Genre.findByIdAndDelete(req.params.id);
+
+    if (!genre) {
+      return res.status(404).json({ message: "Genre not found" });
+    }
+
+    res.status(200).json({ message: "Genre deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
 };
